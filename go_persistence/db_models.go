@@ -1,0 +1,71 @@
+package go_persistence
+
+type HadithCollection struct {
+	Name                 string `gorm:"column:name" json:"name"`
+	HasBooks             string `gorm:"column:hasbooks"`
+	HasChapters          string `gorm:"column:haschapters"`
+	EnglishTitle         string `gorm:"column:englishTitle"`
+	ShortIntro           string `gorm:"column:shortintro"`
+	ArabicTitle          string `gorm:"column:arabicTitle"`
+	ShortIntroArabic     string `gorm:"column:shortIntroArabic"`
+	TotalHadith          int    `gorm:"column:totalhadith"`
+	TotalAvailableHadith int    `gorm:"column:numhadith"`
+}
+
+func (hc *HadithCollection) TableName() string {
+	return "Collections"
+}
+
+type Book struct {
+	OurBookID   int    `gorm:"column:ourBookID"`
+	Collection  string `gorm:"column:collection"`
+	EnglishName string `gorm:"column:englishBookName"`
+	ArabicName  string `gorm:"column:arabicBookName"`
+	FirstNumber int    `gorm:"column:firstNumber"`
+	LastNumber  int    `gorm:"column:lastNumber"`
+	TotalNumber int    `gorm:"column:totalNumber"`
+	Status      int    `gorm:"column:status"`
+}
+
+func (b *Book) TableName() string {
+	return "BookData"
+}
+
+type Chapter struct {
+	Collection       string  `gorm:"column:collection"`
+	ArabicBookID     int     `gorm:"column:arabicBookID"`
+	BabID            float64 `gorm:"column:babID"`
+	EnglishBabNumber string  `gorm:"column:englishBabNumber"`
+	EnglishBabName   string  `gorm:"column:englishBabName"`
+	EnglishIntro     string  `gorm:"column:englishIntro"`
+	EnglishEnding    string  `gorm:"column:englishEnding"`
+	ArabicBabNumber  string  `gorm:"column:arabicBabNumber"`
+	ArabicBabName    string  `gorm:"column:arabicBabName"`
+	ArabicIntro      string  `gorm:"column:arabicIntro"`
+	ArabicEnding     string  `gorm:"column:arabicEnding"`
+}
+
+func (c *Chapter) TableName() string {
+	return "ChapterData"
+}
+
+type Hadith struct {
+	Collection       string `gorm:"column:collection"`
+	BookNumber       string `gorm:"column:bookNumber"`
+	BabID            int    `gorm:"column:babID"`
+	HadithNumber     string `gorm:"column:hadithNumber"`
+	EnglishBabNumber string `gorm:"column:englishBabNumber"`
+	EnglishBabName   string `gorm:"column:englishBabName"`
+	EnglishURN       int    `gorm:"column:englishURN"`
+	EnglishText      string `gorm:"column:englishText"`
+	ArabicBabNumber  string `gorm:"column:arabicBabNumber"`
+	ArabicBabName    string `gorm:"column:arabicBabName"`
+	ArabicURN        int    `gorm:"column:arabicURN"`
+	ArabicText       string `gorm:"column:arabicText"`
+	EnglishGrade1    string `gorm:"column:englishgrade1"`
+	ArabicGrade1     string `gorm:"column:arabicgrade1"`
+}
+
+func (h *Hadith) TableName() string {
+	return "HadithTable"
+}

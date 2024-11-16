@@ -4,6 +4,6 @@ __pycache__
 
 .vscode/
 .coverage
-venv
+.venv
 
 .env.local
