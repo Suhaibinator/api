@@ -3,9 +3,9 @@ from main import app
 from text_transform import cleanup_text, cleanup_en_text, cleanup_chapter_title, cleanup_en_chapter_title
 import json
 
-
-db = SQLAlchemy(app)
-db.reflect()
+with app.app_context():
+    db = SQLAlchemy(app)
+    db.reflect()
 
 
 def is_number(s):
