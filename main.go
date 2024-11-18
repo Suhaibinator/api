@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"os"
+
 	"github.com/Suhaibinator/api/go_api"
 	"github.com/Suhaibinator/api/go_persistence"
 	"github.com/Suhaibinator/api/go_service"
@@ -12,6 +14,11 @@ import (
 
 func main() {
 	// Database connection parameters
+	username := os.Getenv("MYSQL_USER")
+	password := os.Getenv("MYSQL_PASSWORD")
+	hostname := os.Getenv("MYSQL_HOST")
+	port := os.Getenv("port")
+	dbname := os.Getenv("MYSQL_DATABASE")
 
 	// Build the DSN (Data Source Name)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",

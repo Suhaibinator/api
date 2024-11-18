@@ -28,6 +28,7 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "env": {},
+            "envFile": "${workspaceFolder}/.env.prod_connect"
         }
     ]
 }
