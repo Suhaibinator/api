@@ -1,28 +1,15 @@
 package go_persistence
 
 type HadithCollection struct {
-	Name                         string  `gorm:"column:name" json:"name"`
-	CollectionId                 int     `gorm:"column:collectionID" json:"collectionID"`
-	Type                         string  `gorm:"column:type" json:"type"`
-	EnglishTitle                 string  `gorm:"column:englishTitle" json:"englishTitle"`
-	ArabicTitle                  string  `gorm:"column:arabicTitle" json:"arabicTitle"`
-	HasVolumes                   string  `gorm:"column:hasvolumes" json:"hasvolumes"`
-	HasBooks                     string  `gorm:"column:hasbooks" json:"hasbooks"`
-	HasChapters                  string  `gorm:"column:haschapters" json:"haschapters"`
-	NumHadith                    int     `gorm:"column:numhadith" json:"numhadith"`
-	TotalHadith                  *int    `gorm:"column:totalhadith" json:"totalhadith"`
-	EnglishGrade1                *string `gorm:"column:englishgrade1" json:"englishgrade1"`
-	ArabicGrade1                 *string `gorm:"column:arabicgrade1" json:"arabicgrade1"`
-	ShowEnglishTranslationNumber string  `gorm:"column:showEnglishTranslationNumber" json:"showEnglishTranslationNumber"`
-	ShowInBookReference          string  `gorm:"column:showInBookReference" json:"showInBookReference"`
-	ShowOnHome                   string  `gorm:"column:showOnHome" json:"showOnHome"`
-	ShowTranslationProgress      string  `gorm:"column:showTranslationProgress" json:"showTranslationProgress"`
-	ReferenceTemplate            *string `gorm:"column:reference_template" json:"reference_template"`
-	Annotation                   *string `gorm:"column:annotation" json:"annotation"`
-	ShortIntro                   string  `gorm:"column:shortintro" json:"shortintro"`
-	About                        string  `gorm:"column:about" json:"about"`
-	Status                       string  `gorm:"column:status" json:"status"`
-	NumberingInfoDesc            string  `gorm:"column:numberinginfodesc" json:"numberinginfodesc"`
+	Name         string `gorm:"column:name" json:"name"`
+	EnglishTitle string `gorm:"column:englishTitle" json:"englishTitle"`
+	ArabicTitle  string `gorm:"column:arabicTitle" json:"arabicTitle"`
+	HasVolumes   string `gorm:"column:hasvolumes" json:"hasvolumes"`
+	HasBooks     string `gorm:"column:hasbooks" json:"hasbooks"`
+	HasChapters  string `gorm:"column:haschapters" json:"haschapters"`
+	NumHadith    int    `gorm:"column:numhadith" json:"numhadith"`
+	TotalHadith  *int   `gorm:"column:totalhadith" json:"totalhadith"`
+	ShortIntro   string `gorm:"column:shortintro" json:"shortintro"`
 }
 
 func (hc *HadithCollection) TableName() string {
@@ -65,7 +52,7 @@ func (c *Chapter) TableName() string {
 type Hadith struct {
 	Collection       string `gorm:"column:collection"`
 	BookNumber       string `gorm:"column:bookNumber"`
-	BabID            int    `gorm:"column:babID"`
+	BabID            string `gorm:"column:babID"`
 	HadithNumber     string `gorm:"column:hadithNumber"`
 	EnglishBabNumber string `gorm:"column:englishBabNumber"`
 	EnglishBabName   string `gorm:"column:englishBabName"`

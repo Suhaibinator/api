@@ -60,6 +60,7 @@ func (ar *ApplicationRouter) Run(port int) {
 }
 
 func (ar *ApplicationRouter) homeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte("<h1>Welcome to sunnah.com API.</h1>"))
 }
 
@@ -108,12 +109,13 @@ func (ar *ApplicationRouter) apiGetAllCollections(w http.ResponseWriter, r *http
 	for i, collection := range collections {
 		apiCollections[i] = ConvertDbCollectionToApiCollection(collection)
 	}
-	result, jsonErr := json.Marshal(apiCollections)
-	if jsonErr != nil {
+
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(apiCollections); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Write(result)
+
 }
 
 func (ar *ApplicationRouter) apiCollectionHandler(w http.ResponseWriter, r *http.Request) {
@@ -134,6 +136,7 @@ func (ar *ApplicationRouter) apiCollectionHandler(w http.ResponseWriter, r *http
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -190,6 +193,7 @@ func (ar *ApplicationRouter) apiGetBooksInCollectionHandler(w http.ResponseWrite
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -211,6 +215,7 @@ func (ar *ApplicationRouter) apGetBookHandler(w http.ResponseWriter, r *http.Req
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -268,6 +273,7 @@ func (ar *ApplicationRouter) apiGetChaptersInBookInCollection(w http.ResponseWri
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -290,6 +296,7 @@ func (ar *ApplicationRouter) apiGetChapterInBookInCollection(w http.ResponseWrit
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -347,6 +354,7 @@ func (ar *ApplicationRouter) apiGetHadithsInBook(w http.ResponseWriter, r *http.
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -369,6 +377,7 @@ func (ar *ApplicationRouter) apiGetHadithInCollectionByHadithNumber(w http.Respo
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -403,6 +412,7 @@ func (ar *ApplicationRouter) apiGetHadithByUrn(w http.ResponseWriter, r *http.Re
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
 
@@ -421,5 +431,6 @@ func (ar *ApplicationRouter) apiHadithsRandomHandler(w http.ResponseWriter, r *h
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(result)
 }
