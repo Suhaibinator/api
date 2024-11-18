@@ -1,6 +1,11 @@
 package go_api
 
-import "github.com/Suhaibinator/api/go_persistence"
+import (
+	"fmt"
+
+	"github.com/Suhaibinator/api/go_persistence"
+	"github.com/Suhaibinator/api/go_service"
+)
 
 type CollectionMeta struct {
 	Language   string `json:"lang"`
@@ -17,17 +22,19 @@ type Collection struct {
 	TotalAvailableHadith int              `json:"totalAvailableHadith"`
 }
 
-func ConvertDbCollectionToApiCollection(dbCollection go_persistence.HadithCollection) *Collection {
+func ConvertDbCollectionToApiCollection(dbCollection *go_persistence.HadithCollection) *Collection {
+	// Python version includes shortIntroArabic
+
 	collection := Collection{
 		Name:        dbCollection.Name,
 		HasBooks:    dbCollection.HasBooks == "yes",
 		HasChapters: dbCollection.HasChapters == "yes",
 		CollectionMeta: []CollectionMeta{
 			{Language: "en", Title: dbCollection.EnglishTitle, ShortIntro: dbCollection.ShortIntro},
-			{Language: "ar", Title: dbCollection.ArabicTitle, ShortIntro: dbCollection.ShortIntroArabic},
+			{Language: "ar", Title: dbCollection.ArabicTitle, ShortIntro: dbCollection.ShortIntro},
 		},
-		TotalHadith:          dbCollection.TotalHadith,
-		TotalAvailableHadith: dbCollection.TotalAvailableHadith,
+		TotalHadith:          *dbCollection.TotalHadith,
+		TotalAvailableHadith: dbCollection.NumHadith,
 	}
 
 	return &collection
@@ -54,6 +61,20 @@ type Book struct {
 	NumberOfHadith    int        `json:"numberOfHadith"`
 }
 
+func ConvertDbBookToApiBook(dbBook *go_persistence.Book) *Book {
+	book := Book{
+		BookNumber: go_service.GetBookNumberFromBookId(dbBook.OurBookID),
+		BookMeta: []BookMeta{
+			{Language: "en", Name: *dbBook.EnglishName},
+			{Language: "ar", Name: *dbBook.ArabicName},
+		},
+		HadithStartNumber: dbBook.FirstNumber,
+		HadithEndNumber:   dbBook.LastNumber,
+		NumberOfHadith:    dbBook.TotalNumber,
+	}
+	return &book
+}
+
 type PaginatedBooks struct {
 	Books []Book `json:"data"`
 	Total int    `json:"total"`
@@ -74,6 +95,23 @@ type Chapter struct {
 	BookNumber  string        `json:"bookNumber"`
 	ChapterId   string        `json:"chapterId"`
 	ChapterMeta []ChapterMeta `json:"chapter"`
+}
+
+func ConvertDbChapterToApiChapter(dbChapter *go_persistence.Chapter) *Chapter {
+	chapter := Chapter{
+		BookNumber: dbChapter.Collection,
+		ChapterId:  fmt.Sprint(dbChapter.BabID),
+		ChapterMeta: []ChapterMeta{
+			{
+				Language:      "en",
+				ChapterNumber: dbChapter.EnglishBabNumber,
+				ChapterTitle:  dbChapter.EnglishBabName,
+				Intro:         &dbChapter.EnglishIntro,
+				Ending:        &dbChapter.EnglishEnding,
+			},
+		},
+	}
+	return &chapter
 }
 
 type PaginatedChapters struct {
@@ -104,6 +142,26 @@ type Hadith struct {
 	ChapterId    string       `json:"chapterId"`
 	HadithNumber string       `json:"hadithNumber"`
 	HadithMeta   []HadithMeta `json:"hadith"`
+}
+
+func ConvertDbHadithToApiHadith(dbHadith *go_persistence.Hadith) *Hadith {
+	hadith := Hadith{
+		Collection:   dbHadith.Collection,
+		BookNumber:   dbHadith.BookNumber,
+		ChapterId:    fmt.Sprint(dbHadith.BabID),
+		HadithNumber: dbHadith.HadithNumber,
+		HadithMeta: []HadithMeta{
+			{
+				Language:      "en",
+				ChapterNumber: dbHadith.EnglishBabNumber,
+				ChapterTitle:  dbHadith.EnglishBabName,
+				Urn:           dbHadith.EnglishURN,
+				Body:          dbHadith.EnglishText,
+				Grades:        []HadithGradedBy{},
+			},
+		},
+	}
+	return &hadith
 }
 
 type PaginatedHadiths struct {
