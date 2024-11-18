@@ -5,6 +5,6 @@ __pycache__
 .coverage
 .venv
 
-.env.local
+.env.*
 db
 db2
